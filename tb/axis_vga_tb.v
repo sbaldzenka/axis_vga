@@ -1,70 +1,103 @@
-// project : vga ip-core
-// date    : 07.02.2026
-// author  : siarhei baldzenka
-// e-mail  : sbaldzenka@proton.me
-
 /*
-    // ----------------------------- 640x480@60Hz
-    // Horizontal parameters
-    parameter H_ACTIVE  = 640,
-    parameter H_F_PORCH = 16,
-    parameter H_SYNC_P  = 96,
-    parameter H_B_PORCH = 48,
-    // Vertical parameters
-    parameter V_ACTIVE  = 480,
-    parameter V_F_PORCH = 11,
-    parameter V_SYNC_P  = 2,
-    parameter V_B_PORCH = 31
-    // ----------------------------- 800x600@60Hz
-    // Horizontal parameters
-    parameter H_ACTIVE  = 800,
-    parameter H_F_PORCH = 40,
-    parameter H_SYNC_P  = 128,
-    parameter H_B_PORCH = 88,
-    // Vertical parameters
-    parameter V_ACTIVE  = 600,
-    parameter V_F_PORCH = 1,
-    parameter V_SYNC_P  = 4,
-    parameter V_B_PORCH = 23
-    // ----------------------------- 800x600@72Hz
-    // Horizontal parameters
-    parameter H_ACTIVE  = 800,
-    parameter H_F_PORCH = 56,
-    parameter H_SYNC_P  = 120,
-    parameter H_B_PORCH = 64,
-    // Vertical parameters
-    parameter V_ACTIVE  = 600,
-    parameter V_F_PORCH = 37,
-    parameter V_SYNC_P  = 6,
-    parameter V_B_PORCH = 23
-    // ----------------------------- 800x600@76Hz
-    // Horizontal parameters
-    parameter H_ACTIVE  = 800,
-    parameter H_F_PORCH = 16,
-    parameter H_SYNC_P  = 80,
-    parameter H_B_PORCH = 160,
-    // Vertical parameters
-    parameter V_ACTIVE  = 600,
-    parameter V_F_PORCH = 1,
-    parameter V_SYNC_P  = 2,
-    parameter V_B_PORCH = 21
-    // ----------------------------- 1024x768@70Hz
-    // Horizontal parameters
-    parameter H_ACTIVE  = 800,
-    parameter H_F_PORCH = 40,
-    parameter H_SYNC_P  = 128,
-    parameter H_B_PORCH = 88,
-    // Vertical parameters
-    parameter V_ACTIVE  = 600,
-    parameter V_F_PORCH = 1,
-    parameter V_SYNC_P  = 4,
-    parameter V_B_PORCH = 23
+---------------------------------------------------------------------------------------
+
+MIT License
+
+Copyright (c) 2026 Siarhei Baldzenka
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+---------------------------------------------------------------------------------------
+
+project     : axis_vga
+version     : 1.0
+date        : 07.02.2026
+author      : siarhei baldzenka
+e-mail      : sbaldzenka@proton.me
+description : https://github.com/sbaldzenka/axis_vga
+
+              Pixel clock = 25 MHz:
+              //----------------------------- 640x480@60Hz
+              // Horizontal parameters
+              parameter H_ACTIVE  = 640,
+              parameter H_F_PORCH = 16,
+              parameter H_SYNC_P  = 96,
+              parameter H_B_PORCH = 48,
+              // Vertical parameters
+              parameter V_ACTIVE  = 480,
+              parameter V_F_PORCH = 11,
+              parameter V_SYNC_P  = 2,
+              parameter V_B_PORCH = 31
+              // ----------------------------- 800x600@60Hz
+              // Horizontal parameters
+              parameter H_ACTIVE  = 800,
+              parameter H_F_PORCH = 40,
+              parameter H_SYNC_P  = 128,
+              parameter H_B_PORCH = 88,
+              // Vertical parameters
+              parameter V_ACTIVE  = 600,
+              parameter V_F_PORCH = 1,
+              parameter V_SYNC_P  = 4,
+              parameter V_B_PORCH = 23
+              // ----------------------------- 800x600@72Hz
+              // Horizontal parameters
+              parameter H_ACTIVE  = 800,
+              parameter H_F_PORCH = 56,
+              parameter H_SYNC_P  = 120,
+              parameter H_B_PORCH = 64,
+              // Vertical parameters
+              parameter V_ACTIVE  = 600,
+              parameter V_F_PORCH = 37,
+              parameter V_SYNC_P  = 6,
+              parameter V_B_PORCH = 23
+              // ----------------------------- 800x600@76Hz
+              // Horizontal parameters
+              parameter H_ACTIVE  = 800,
+              parameter H_F_PORCH = 16,
+              parameter H_SYNC_P  = 80,
+              parameter H_B_PORCH = 160,
+              // Vertical parameters
+              parameter V_ACTIVE  = 600,
+              parameter V_F_PORCH = 1,
+              parameter V_SYNC_P  = 2,
+              parameter V_B_PORCH = 21
+              // ----------------------------- 1024x768@70Hz
+              // Horizontal parameters
+              parameter H_ACTIVE  = 800,
+              parameter H_F_PORCH = 40,
+              parameter H_SYNC_P  = 128,
+              parameter H_B_PORCH = 88,
+              // Vertical parameters
+              parameter V_ACTIVE  = 600,
+              parameter V_F_PORCH = 1,
+              parameter V_SYNC_P  = 4,
+              parameter V_B_PORCH = 23
+
+---------------------------------------------------------------------------------------
 */
 
 `timescale 1ns/100ps
 
 module axis_vga_tb
 #(
+    // sim parameters
+    parameter PIXEL_CLOCK_PERIOD = 40, // 25 MHz
+    // dut parameters
     parameter AXIS_DATA_WIDTH = 24,
     parameter COLOR_WIDTH     = 8,
     // Horizontal parameters
@@ -79,13 +112,10 @@ module axis_vga_tb
     parameter V_B_PORCH       = 31
 );
 
-    parameter PIXEL_CLOCK_PERIOD = 40; // 25 MHz
-
     reg                        clk;
     reg                        resetn;
 
-    reg                        en;
-    reg [                 3:0] pattern;
+    reg                        test_en;
 
     wire                       m_axis_valid;
     wire [AXIS_DATA_WIDTH-1:0] m_axis_data;
@@ -112,29 +142,9 @@ module axis_vga_tb
     end
 
     initial begin
-             en      = 1'b0;
-             pattern = 4'h0;
-
-        #500 en      = 1'b1;
-             pattern = 4'h1;
+             test_en = 1'b0;
+        #500 test_en = 1'b1;
     end
-
-    defparam axis_vtpg_inst.H_ACTIVE         = H_ACTIVE;
-    defparam axis_vtpg_inst.V_ACTIVE         = V_ACTIVE;
-    defparam axis_vtpg_inst.AXIS_DATA_WIDTH  = AXIS_DATA_WIDTH;
-
-    axis_vtpg axis_vtpg_inst
-    (
-        .m_axis_clk    ( clk          ),
-        .m_axis_resetn ( resetn       ),
-        .i_enable      ( en           ),
-        .i_pattern     ( pattern      ),
-        .m_axis_valid  ( m_axis_valid ),
-        .m_axis_data   ( m_axis_data  ),
-        .m_axis_user   ( m_axis_user  ),
-        .m_axis_last   ( m_axis_last  ),
-        .m_axis_ready  ( m_axis_ready )
-    );
 
     defparam DUT_inst.AXIS_DATA_WIDTH = AXIS_DATA_WIDTH;
     defparam DUT_inst.COLOR_WIDTH     = COLOR_WIDTH;
@@ -151,6 +161,7 @@ module axis_vga_tb
     (
         .s_axis_clk    ( clk          ),
         .s_axis_resetn ( resetn       ),
+        .i_test_en     ( test_en      ),
         .s_axis_valid  ( m_axis_valid ),
         .s_axis_data   ( m_axis_data  ),
         .s_axis_user   ( m_axis_user  ),

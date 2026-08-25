@@ -1,7 +1,38 @@
-// project : vga ip-core
-// date    : 07.02.2026
-// author  : siarhei baldzenka
-// e-mail  : sbaldzenka@proton.me
+/*
+---------------------------------------------------------------------------------------
+
+MIT License
+
+Copyright (c) 2026 Siarhei Baldzenka
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+---------------------------------------------------------------------------------------
+
+project     : axis_vga
+version     : 1.0
+date        : 07.02.2026
+author      : siarhei baldzenka
+e-mail      : sbaldzenka@proton.me
+description : https://github.com/sbaldzenka/axis_vga
+
+---------------------------------------------------------------------------------------
+*/
 
 `timescale 1ns/100ps
 
@@ -68,7 +99,7 @@ module vga
     reg [ 3:0] h_state;
     reg [ 3:0] v_state;
 
-    always@(posedge i_clk) begin
+    always @(posedge i_clk) begin
         if (!i_reset_n) begin
             h_value <= 'b0;
             v_value <= 'b0;
@@ -78,7 +109,7 @@ module vga
         end
     end
 
-    always@(posedge i_clk) begin
+    always @(posedge i_clk) begin
         if (line_counter == 'b0) begin
             sof <= 1'b1;
         end else begin
@@ -88,7 +119,7 @@ module vga
         sof_ff <= sof;
     end
 
-    always@(posedge i_clk) begin
+    always @(posedge i_clk) begin
         if (v_state == S_V_IDLE) begin
             frame_counter <= 'b0;
         end else begin
@@ -98,7 +129,7 @@ module vga
         end
     end
 
-    always@(posedge i_clk) begin
+    always @(posedge i_clk) begin
         if (!i_reset_n) begin
             h_state <= S_H_IDLE;
         end else begin
@@ -144,7 +175,7 @@ module vga
         end
     end
 
-    always@(posedge i_clk) begin
+    always @(posedge i_clk) begin
         if (!i_reset_n) begin
             v_state <= S_V_IDLE;
         end else begin
@@ -191,7 +222,7 @@ module vga
         end
     end
 
-    always@(posedge i_clk) begin
+    always @(posedge i_clk) begin
         if (h_state == S_H_IDLE) begin
             pixel_counter <= 'b0;
         end else begin
@@ -203,7 +234,7 @@ module vga
         end
     end
 
-    always@(posedge i_clk) begin
+    always @(posedge i_clk) begin
         if (v_state == S_V_IDLE) begin
             line_counter <= 'b0;
         end else begin
@@ -215,8 +246,9 @@ module vga
         end
     end
 
-    always@(posedge i_clk) begin
-        if ((h_state == S_H_IDLE || h_state == S_H_ACTIVE_DATA) && (v_state == S_V_ACTIVE_DATA || v_state == S_V_CONTROL_CHECK)) begin
+    always @(posedge i_clk) begin
+        if ((h_state == S_H_IDLE || h_state == S_H_ACTIVE_DATA)
+            && (v_state == S_V_ACTIVE_DATA || v_state == S_V_CONTROL_CHECK)) begin
             if (line_counter < V_ACTIVE) begin
                 o_ready <= 1'b1;
             end else begin
@@ -227,7 +259,7 @@ module vga
         end
     end
 
-    always@(posedge i_clk) begin
+    always @(posedge i_clk) begin
         if (v_state == S_H_ACTIVE_DATA && h_state == S_H_ACTIVE_DATA) begin
             if (i_test_en) begin
                 o_r <= o_r + 1'b1;
@@ -245,7 +277,7 @@ module vga
         end
     end
 
-    always@(posedge i_clk) begin
+    always @(posedge i_clk) begin
         if (v_state == S_V_SYNC) begin
             o_vsync <= 1'b0;
         end else begin
@@ -253,7 +285,7 @@ module vga
         end
     end
 
-    always@(posedge i_clk) begin
+    always @(posedge i_clk) begin
         if (h_state == S_H_SYNC) begin
             o_hsync <= 1'b0;
         end else begin
