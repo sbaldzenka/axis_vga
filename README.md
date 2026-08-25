@@ -2,7 +2,7 @@
 
 > **version: 1.0**
 
-### Description
+### Description:
 VGA IP-core with AXI Video Stream interface.
 
 ### Catalog structure:
