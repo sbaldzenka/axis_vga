@@ -98,18 +98,18 @@ module axis_vga_tb
     // sim parameters
     parameter PIXEL_CLOCK_PERIOD = 40, // 25 MHz
     // dut parameters
-    parameter AXIS_DATA_WIDTH = 24,
-    parameter COLOR_WIDTH     = 8,
+    parameter AXIS_DATA_WIDTH    = 24,
+    parameter COLOR_WIDTH        = 8,
     // Horizontal parameters
-    parameter H_ACTIVE        = 640,
-    parameter H_F_PORCH       = 16,
-    parameter H_SYNC_P        = 96,
-    parameter H_B_PORCH       = 48,
+    parameter H_ACTIVE           = 640,
+    parameter H_F_PORCH          = 16,
+    parameter H_SYNC_P           = 96,
+    parameter H_B_PORCH          = 48,
     // Vertical parameters
-    parameter V_ACTIVE        = 480,
-    parameter V_F_PORCH       = 11,
-    parameter V_SYNC_P        = 2,
-    parameter V_B_PORCH       = 31
+    parameter V_ACTIVE           = 480,
+    parameter V_F_PORCH          = 11,
+    parameter V_SYNC_P           = 2,
+    parameter V_B_PORCH          = 31
 );
 
     reg                        clk;
